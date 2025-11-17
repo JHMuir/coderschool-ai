@@ -3,7 +3,11 @@ import numpy
 import matplotlib
 import sklearn
 
-# STEP 1: Data Pre-Processing
+# Pandas: Stands for Panel Data. Organizes our dataset into a chart-like object. VERY popular with data scientists when working with .csv
+# We can use Pandas DataFrames very similarly to dictionaries
+# SciKit Learn (SkLearn): A ML library similar to Keras. Main difference being, Sklearn has more options for data preprocessing, and comes with certain models out of box
+# Keras provides more freedom when constructing a model yourself. 
+# ===== Step 1: Data Pre-Processing ===== 
 
 # Load the dataset
 df = pandas.read_csv('Salary_dataset.csv')
@@ -40,7 +44,7 @@ x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y
 print(f"\nTraining set size: {len(x_train)} samples")
 print(f"Testing set size: {len(x_test)} samples")
 
-
+# Plotting our data
 matplotlib.pyplot.figure(figsize=(10, 6))
 matplotlib.pyplot.scatter(x_train, y_train, color='blue', alpha=0.6, label='Training Data')
 matplotlib.pyplot.scatter(x_test, y_test, color='red', alpha=0.6, label='Testing Data')
@@ -50,11 +54,9 @@ matplotlib.pyplot.title('Salary vs Years of Experience', fontsize=14, fontweight
 matplotlib.pyplot.legend()
 matplotlib.pyplot.grid(True, alpha=0.3)
 matplotlib.pyplot.tight_layout()
-matplotlib.pyplot.savefig('data_visualization.png', dpi=300, bbox_inches='tight')
-print("\n✓ Saved visualization: data_visualization.png")
-print("  This scatter plot shows the relationship between experience and salary.")
+matplotlib.pyplot.show()
 
-# STEP 2: Training
+# ===== Step 2: Training ===== 
 
 # Create a Linear Regression model
 # Linear Regression finds the best-fit line through the data points
@@ -64,62 +66,32 @@ print("  This scatter plot shows the relationship between experience and salary.
 model = sklearn.linear_model.LinearRegression()
 
 # Train the model on the training data
-# This is where the model "learns" the relationship between X and y
+# This is where the model "learns" the relationship between x and y
 model.fit(x_train, y_train)
 
-print("\n✓ Model training complete!")
 print(f"\nModel Parameters:")
 print(f"  Slope (coefficient): ${model.coef_[0]:.2f} per year")
 print(f"  Intercept: ${model.intercept_:.2f}")
 print(f"\n  Interpretation: For each additional year of experience,")
 print(f"  salary increases by approximately ${model.coef_[0]:.2f}")
 
-# ============================================================================
-# STEP 3: Inferencing
-# ============================================================================
-print("\n" + "=" * 70)
-print("STEP 5: Making Predictions")
-print("=" * 70)
+# ===== Step 3: Inferencing =====
 
 # Make predictions on the test set
 y_pred = model.predict(x_test)
 
 # Display some example predictions
-print("\nExample Predictions on Test Data:")
-print("-" * 60)
-print(f"{'Years Experience':<20} {'Actual Salary':<20} {'Predicted Salary':<20}")
-print("-" * 60)
 for i in range(min(10, len(x_test))):
     years = x_test.iloc[i, 0]
     actual = y_test.iloc[i]
     predicted = y_pred[i]
     print(f"{years:<20.1f} ${actual:<19,.0f} ${predicted:<19,.0f}")
 
-# ============================================================================
-# STEP 6: EVALUATE THE MODEL
-# ============================================================================
-
 # Calculate evaluation metrics
 mse = sklearn.metrics.mean_squared_error(y_test, y_pred)
 rmse = numpy.sqrt(mse)
 mae = sklearn.metrics.mean_absolute_error(y_test, y_pred)
 r2 = sklearn.metrics.r2_score(y_test, y_pred)
-
-print("\nModel Performance Metrics:")
-print("-" * 60)
-print(f"R² Score: {r2:.4f}")
-print(f"  → This means the model explains {r2*100:.2f}% of the variance in salary")
-print(f"  → Values closer to 1.0 indicate better predictions")
-
-print(f"\nMean Absolute Error (MAE): ${mae:,.2f}")
-print(f"  → On average, predictions are off by about ${mae:,.2f}")
-
-print(f"\nRoot Mean Squared Error (RMSE): ${rmse:,.2f}")
-print(f"  → This penalizes larger errors more heavily than MAE")
-
-print("\n" + "=" * 70)
-print("STEP 7: Visualizing the Model")
-print("=" * 70)
 
 # Create a range of experience values for plotting the line
 X_range = numpy.linspace(x.min(), x.max(), 100).reshape(-1, 1)
@@ -137,6 +109,7 @@ matplotlib.pyplot.ylabel('Salary ($)', fontsize=11)
 matplotlib.pyplot.title('Linear Regression Model', fontsize=12, fontweight='bold')
 matplotlib.pyplot.legend()
 matplotlib.pyplot.grid(True, alpha=0.3)
+matplotlib.pyplot.show()
 
 # Plot 2: Actual vs Predicted values
 matplotlib.pyplot.subplot(1, 2, 2)
@@ -148,36 +121,6 @@ matplotlib.pyplot.ylabel('Predicted Salary ($)', fontsize=11)
 matplotlib.pyplot.title('Actual vs Predicted Salaries', fontsize=12, fontweight='bold')
 matplotlib.pyplot.legend()
 matplotlib.pyplot.grid(True, alpha=0.3)
-
 matplotlib.pyplot.tight_layout()
-matplotlib.pyplot.savefig('regression_results.png', dpi=300, bbox_inches='tight')
-print("\n✓ Saved visualization: regression_results.png")
+matplotlib.pyplot.show()
 
-# Predict salaries for different years of experience
-custom_experience = numpy.array([[2], [5], [7], [10]])
-custom_predictions = model.predict(custom_experience)
-
-print("\nPredicted Salaries for Different Experience Levels:")
-print("-" * 60)
-for years, salary in zip(custom_experience.flatten(), custom_predictions):
-    print(f"  {years} years experience → Predicted salary: ${salary:,.2f}")
-
-print("\n" + "=" * 70)
-print("SUMMARY")
-print("=" * 70)
-print(f"""
-We successfully built a linear regression model that:
-  • Uses years of experience to predict salary
-  • Achieves an R² score of {r2:.4f}
-  • Has an average prediction error of ${mae:,.2f}
-  
-The model learned that each additional year of experience
-increases salary by approximately ${model.coef_[0]:.2f}.
-
-This demonstrates the fundamental concept of regression:
-finding the mathematical relationship between variables
-to make predictions on new data.
-""")
-
-print("\n✓ All visualizations saved to /mnt/user-data/outputs/")
-print("=" * 70)
