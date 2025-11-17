@@ -1,4 +1,4 @@
-# **Welcome to our first project, Handwritten MNIST**
+# **Project 1: Handwritten NN from MNIST**
   - This project involves creating a Neural Network model that detects handwritten digits from pixel image data. It is a lot simpler than it sounds, trust me. 
   - For a very comprehensive overview of this project, I HIGHLY recommend watching [3Blue1Brown's video on the basics on Neural Networks.](https://www.youtube.com/watch?v=aircAruvnKk). It directly covers this project on a conceptual basis, and explains how NNs work and how they "learn".
 
