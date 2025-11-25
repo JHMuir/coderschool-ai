@@ -1,6 +1,6 @@
 # Turning off GPU acceleration here - not needed if your device has not been configured with CUDA, and can be ignored. 
-# import os
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 import keras
 import tensorflow
